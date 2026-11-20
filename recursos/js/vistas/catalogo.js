@@ -5,8 +5,6 @@ import { crearElemento } from "../utilidades.js";
 import { crearTarjeta } from "./tarjeta.js";
 import { mostrarError } from "./aviso.js";
 
-const CLAVE_FILTROS = "molido-filtros";
-
 function leerFiltros(form) {
     const datos = new FormData(form);
     const categorias = new Set(datos.getAll("categoria"));
@@ -21,35 +19,6 @@ function leerFiltros(form) {
         precioMax: Number(datos.get("precio")),
         orden: datos.get("orden") ?? "relevancia",
     };
-}
-
-// Persistencia de los filtros elegidos (localStorage), para conservarlos al volver al catálogo.
-function guardarFiltros(form) {
-    try {
-        const valores = [...new FormData(form)];
-        localStorage.setItem(CLAVE_FILTROS, JSON.stringify(valores));
-    } catch {
-        /* Si localStorage no está disponible, simplemente no se recuerdan. */
-    }
-}
-
-function restaurarFiltros(form) {
-    try {
-        const valores = JSON.parse(localStorage.getItem(CLAVE_FILTROS));
-        if (!Array.isArray(valores)) return;
-        for (const [nombre, valor] of valores) {
-            const campos = form.querySelectorAll(`[name="${nombre}"]`);
-            campos.forEach((campo) => {
-                if (campo.type === "checkbox" || campo.type === "radio") {
-                    if (campo.value === valor) campo.checked = true;
-                } else {
-                    campo.value = valor;
-                }
-            });
-        }
-    } catch {
-        localStorage.removeItem(CLAVE_FILTROS);
-    }
 }
 
 function renderizar(contenedor, lista, secciones) {
@@ -91,13 +60,11 @@ export async function iniciarCatalogo() {
         const filtros = leerFiltros(form);
         if (salidaPrecio) salidaPrecio.textContent = "Hasta $" + filtros.precioMax.toLocaleString("es-AR");
         renderizar(contenedor, filtrarProductos(catalogo.productos, filtros), catalogo.secciones);
-        guardarFiltros(form);
     };
 
     form.addEventListener("input", actualizar);
     form.addEventListener("submit", (e) => e.preventDefault());
     form.addEventListener("reset", () => setTimeout(actualizar));
 
-    restaurarFiltros(form);
     actualizar();
 }

@@ -394,7 +394,6 @@ textarea.formulario__control {
 
     font-weight: 600;
 
-    animation: aviso-entrar 0.25s ease-out;
     pointer-events: auto;
 }
 
@@ -409,19 +408,6 @@ textarea.formulario__control {
 
 .aviso--info {
     border-left-color: var(--mostaza-oscuro);
-}
-
-.aviso--saliendo {
-    animation: aviso-salir 0.25s ease-in forwards;
-}
-
-@keyframes aviso-entrar {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes aviso-salir {
-    to { opacity: 0; transform: translateY(12px); }
 }
 
 .mensaje-error {

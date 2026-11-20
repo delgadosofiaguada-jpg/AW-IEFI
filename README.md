@@ -10,7 +10,7 @@ Proyecto final (IEFI) de **Aplicaciones Web 1** — Colegio Universitario IES Si
 ## Funcionalidades
 
 - Catálogo renderizado desde un archivo **JSON** (`recursos/datos/productos.json`) obtenido con **`fetch`**, con manejo de errores (`try/catch`).
-- **Filtros** por texto (sin tildes ni mayúsculas), categoría, origen y precio máximo, y orden por precio o nombre. Los filtros se recuerdan con `localStorage`.
+- **Filtros** por texto (sin tildes ni mayúsculas), categoría, origen y precio máximo, y orden por precio o nombre.
 - **Carrito** con alta, baja y modificación de cantidades, cálculo de envío y total, guardado en `localStorage`.
 - **Proceso de compra en 3 pasos:** carrito → datos de entrega y pago → confirmación. El pedido se **envía por WhatsApp** (enlace `wa.me` con el detalle).
 - **Formulario de contacto** que envía la consulta por **email real** con la API de Web3Forms.
@@ -54,7 +54,7 @@ npm test        # ejecuta los tests unitarios (node --test)
 
 El workflow `.github/workflows/ci-cd.yml` de GitHub Actions:
 
-1. **CI:** en cada push y pull request instala Node 22 y ejecuta `npm test` (tests unitarios y de integración con `node:test`).
+1. **CI:** en cada push y pull request instala Node 22 y ejecuta `npm test` (tests unitarios con `node:test` de 4 funciones).
 2. **CD:** si el push es a `main` **y los tests pasaron**, despliega a producción en Vercel con Vercel CLI.
 
 El despliegue automático propio de Vercel está desactivado (`vercel.json`), así **solo se publica código que pasó los tests**.

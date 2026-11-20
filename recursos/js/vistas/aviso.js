@@ -19,10 +19,7 @@ export function mostrarAviso(texto, tipo = "info", duracion = 4500) {
     aviso.textContent = texto;
     obtenerContenedor().append(aviso);
 
-    setTimeout(() => {
-        aviso.classList.add("aviso--saliendo");
-        aviso.addEventListener("animationend", () => aviso.remove(), { once: true });
-    }, duracion);
+    setTimeout(() => aviso.remove(), duracion);
 }
 
 // Mensaje fijo dentro de un contenedor (por ejemplo, cuando falla la carga del catálogo).
