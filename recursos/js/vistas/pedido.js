@@ -1,11 +1,17 @@
 // Vista: datos de entrega y pago (paso 2 del proceso de compra).
-// Valida el formulario, registra el pedido y lo envía por WhatsApp.
+// Valida el formulario y envía el pedido por email.
 import { guardarPedido, leerCarrito, vaciarCarrito } from "../almacen.js";
 import { obtenerProductos } from "../datos/api.js";
-import { CONFIG } from "../config.js";
-import { calcularTotales, crearElemento, detallarItems, formatearPrecio, sumarSubtotales } from "../utilidades.js";
+import {
+    armarMensajePedido,
+    calcularTotales,
+    crearElemento,
+    detallarItems,
+    formatearPrecio,
+    sumarSubtotales,
+} from "../utilidades.js";
 import { conectarValidacion } from "../validacion.js";
-import { armarMensajePedido, crearEnlaceWhatsApp } from "../servicios/whatsapp.js";
+import { enviarPedido } from "../servicios/email.js";
 import { actualizarResumen } from "./resumen.js";
 import { mostrarAviso, mostrarError } from "./aviso.js";
 
@@ -49,7 +55,9 @@ export async function iniciarPedido() {
 
     const validarFormulario = conectarValidacion(form, ESQUEMA);
 
-    form.addEventListener("submit", (e) => {
+    const boton = form.querySelector("[type='submit']");
+
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const datos = validarFormulario();
         if (!datos) {
@@ -59,24 +67,28 @@ export async function iniciarPedido() {
 
         const pedido = {
             numero: "MC-" + Date.now().toString().slice(-6),
-            fecha: new Date().toISOString(),
             cliente: datos,
             items: items.map(({ producto, cantidad, subtotal }) => ({
-                id: producto.id,
                 nombre: producto.nombre,
                 cantidad,
                 subtotal,
             })),
             ...calcularTotales(sumarSubtotales(items)),
         };
-        pedido.enlaceWhatsApp = crearEnlaceWhatsApp(CONFIG.whatsapp, armarMensajePedido(pedido));
 
-        guardarPedido(pedido);
-        vaciarCarrito();
+        boton.disabled = true;
+        boton.textContent = "Enviando pedido...";
 
-        // Se abre WhatsApp en otra pestaña (dentro del evento submit, así el navegador no lo bloquea)
-        // y esta pestaña pasa a la confirmación.
-        window.open(pedido.enlaceWhatsApp, "_blank", "noopener");
-        window.location.href = "./confirmacion.html";
+        try {
+            await enviarPedido(pedido, armarMensajePedido(pedido));
+            guardarPedido(pedido);
+            vaciarCarrito();
+            window.location.href = "./confirmacion.html";
+        } catch (error) {
+            // Si el envío falla, el carrito se conserva para poder reintentar.
+            mostrarAviso(error.message, "error");
+            boton.disabled = false;
+            boton.textContent = "Realizar pedido";
+        }
     });
 }

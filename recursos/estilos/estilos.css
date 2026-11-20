@@ -427,7 +427,7 @@ textarea.formulario__control {
     text-align: center;
 }
 
-/* ----- Confirmación: envío por WhatsApp ----- */
+/* ----- Confirmación del pedido ----- */
 
 .confirmacion__aviso {
     padding: 10px 14px;
@@ -435,20 +435,6 @@ textarea.formulario__control {
     border-radius: 10px;
 
     background-color: var(--mostaza-claro);
-}
-
-.btn--whatsapp {
-    display: inline-block;
-    margin-top: 12px;
-
-    background-color: #1f8f4e;
-    color: var(--blanco);
-}
-
-.btn--whatsapp:hover,
-.btn--whatsapp:focus-visible {
-    background-color: #17703c;
-    color: var(--blanco);
 }
 
 /* ----- Recuadro de resumen (carrito y pedido) ----- */

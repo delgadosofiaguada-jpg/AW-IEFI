@@ -2,9 +2,8 @@
 // Se ejecutan con: npm test
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { calcularTotales, formatearPrecio } from "../recursos/js/utilidades.js";
+import { calcularTotales, formatearPrecio, armarMensajePedido } from "../recursos/js/utilidades.js";
 import { filtrarProductos } from "../recursos/js/filtros.js";
-import { crearEnlaceWhatsApp } from "../recursos/js/servicios/whatsapp.js";
 
 // 1. calcularTotales: envío de $3.000, gratis desde $50.000
 test("calcularTotales suma el envío cuando el pedido es menor a $50.000", () => {
@@ -42,8 +41,17 @@ test("filtrarProductos respeta el precio máximo", () => {
     assert.equal(resultado[0].nombre, "Croissant");
 });
 
-// 4. crearEnlaceWhatsApp: enlace para enviar el pedido
-test("crearEnlaceWhatsApp arma el enlace wa.me con el texto codificado", () => {
-    const enlace = crearEnlaceWhatsApp("5493511234567", "Hola Molido");
-    assert.equal(enlace, "https://wa.me/5493511234567?text=Hola%20Molido");
+// 4. armarMensajePedido: texto del pedido que se envía por email
+test("armarMensajePedido incluye el número, los productos y el total", () => {
+    const texto = armarMensajePedido({
+        numero: "MC-123456",
+        items: [{ nombre: "Café Origen", cantidad: 2, subtotal: 19000 }],
+        subtotal: 19000,
+        envio: 3000,
+        total: 22000,
+        cliente: { nombre: "Lucía Fernández", telefono: "3511234567", email: "lu@mail.com", direccion: "Av. Colón 1234", pago: "efectivo" },
+    });
+    assert.ok(texto.includes("MC-123456"));
+    assert.ok(texto.includes("2 x Café Origen"));
+    assert.ok(texto.includes("Total: $22.000"));
 });

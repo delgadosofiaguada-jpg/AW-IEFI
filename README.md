@@ -12,7 +12,7 @@ Proyecto final (IEFI) de **Aplicaciones Web 1** — Colegio Universitario IES Si
 - Catálogo renderizado desde un archivo **JSON** (`recursos/datos/productos.json`) obtenido con **`fetch`**, con manejo de errores (`try/catch`).
 - **Filtros** por texto (sin tildes ni mayúsculas), categoría, origen y precio máximo, y orden por precio o nombre.
 - **Carrito** con alta, baja y modificación de cantidades, cálculo de envío y total, guardado en `localStorage`.
-- **Proceso de compra en 3 pasos:** carrito → datos de entrega y pago → confirmación. El pedido se **envía por WhatsApp** (enlace `wa.me` con el detalle).
+- **Proceso de compra en 3 pasos:** carrito → datos de entrega y pago → confirmación. El pedido se **envía por email real** con la API de Web3Forms.
 - **Formulario de contacto** que envía la consulta por **email real** con la API de Web3Forms.
 - **Validaciones** HTML (`required`, `type`, `minlength`, `pattern`) y **JavaScript** (reglas propias con mensajes por campo).
 - **Notificaciones** en la interfaz (avisos flotantes de éxito o error).
@@ -28,13 +28,13 @@ Proyecto final (IEFI) de **Aplicaciones Web 1** — Colegio Universitario IES Si
 │   ├── imagenes/
 │   └── js/
 │       ├── index.js              Punto de entrada: inicia la vista de cada página
-│       ├── config.js             Número de WhatsApp y clave de Web3Forms
+│       ├── config.js             Clave de Web3Forms
 │       ├── almacen.js            Carrito y último pedido (localStorage)
 │       ├── utilidades.js         Cálculos y funciones auxiliares
 │       ├── filtros.js            Filtrado y orden del catálogo
 │       ├── validacion.js         Reglas de validación de formularios
 │       ├── datos/api.js          fetch del JSON con try/catch
-│       ├── servicios/            whatsapp.js, email.js
+│       ├── servicios/email.js    Envío de pedidos y consultas por email
 │       └── vistas/               catalogo, tarjeta, carrito, resumen, pedido, confirmacion, contacto, aviso
 ├── tests/                        Tests con node:test
 └── .github/workflows/ci-cd.yml   Pipeline de CI/CD

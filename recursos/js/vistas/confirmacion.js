@@ -19,23 +19,13 @@ export function iniciarConfirmacion() {
         )
     );
 
-    const whatsapp = crearElemento("a", "btn btn--whatsapp", "Enviar el pedido por WhatsApp");
-    whatsapp.href = pedido.enlaceWhatsApp;
-    whatsapp.target = "_blank";
-    whatsapp.rel = "noopener";
-
     contenedor.replaceChildren(
         crearElemento("h2", "confirmacion__titulo", `¡Gracias, ${pedido.cliente.nombre}!`),
         crearElemento("p", "", `Tu pedido ${pedido.numero} fue registrado.`),
-        crearElemento(
-            "p",
-            "confirmacion__aviso",
-            "Para confirmarlo, envianos el mensaje que se abrió en WhatsApp. Si no se abrió, usá el botón de abajo."
-        ),
+        crearElemento("p", "confirmacion__aviso", `Recibimos tu pedido y te contactaremos a ${pedido.cliente.email} para coordinar la entrega.`),
         lista,
-        crearElemento("p", "confirmacion__total", `Total: ${formatearPrecio(pedido.total)}`),
-        whatsapp
+        crearElemento("p", "confirmacion__total", `Total: ${formatearPrecio(pedido.total)}`)
     );
 
-    mostrarAviso(`Pedido ${pedido.numero} registrado. Te esperamos en WhatsApp para confirmarlo.`, "exito");
+    mostrarAviso(`Pedido ${pedido.numero} registrado. ¡Gracias por tu compra!`, "exito");
 }
