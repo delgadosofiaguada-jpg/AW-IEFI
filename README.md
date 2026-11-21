@@ -1,29 +1,61 @@
-#  Aplicaciones Web 1 - Proyecto Escrito (SP1)
-## Molido Café — *El sabor de cada momento*
+# Molido Café — *El sabor de cada momento*
 
-Este repositorio contiene el desarrollo del proyecto web frontend para **Molido Café**, una cafetería de especialidad y pastelería artesanal (caso de negocio ficticio). El proyecto se enfoca en resolver la necesidad de los clientes de consultar la oferta gastronómica y realizar pedidos de forma ágil desde el navegador.
+Sitio web front-end de **Molido Café**, cafetería de especialidad y pastelería artesanal (caso de negocio ficticio).
+Proyecto final (IEFI) de **Aplicaciones Web 1** — Colegio Universitario IES Siglo 21.
 
----
+- **Sitio publicado:** _(completar con la URL de Vercel)_
+- **Alumna:** Delgado, Sofía — Analista de Sistemas y Desarrollo de Software
+- **TP grupales (SP1 a SP4):** Astudillo, Delgado, Roldán, Gaido. Cada etapa está en su propia rama.
 
-###  Integrantes
-* **Astudillo**, Guadalupe
-* **Delgado**, Sofía
-* **Roldán**, Lara Martina
-* **Gaido**, Leandro
+## Funcionalidades
 
-**Carrera:** Analista de Sistemas  
-**Institución:** Colegio Universitario IES Siglo 21  
+- Catálogo renderizado desde un archivo **JSON** (`recursos/datos/productos.json`) obtenido con **`fetch`**, con manejo de errores (`try/catch`).
+- **Filtros** por texto (sin tildes ni mayúsculas), categoría, origen y precio máximo, y orden por precio o nombre.
+- **Carrito** con alta, baja y modificación de cantidades, cálculo de envío y total, guardado en `localStorage`.
+- **Proceso de compra en 3 pasos:** carrito → datos de entrega y pago → confirmación. El pedido se **envía por email real** con la API de Web3Forms.
+- **Formulario de contacto** que envía la consulta por **email real** con la API de Web3Forms.
+- **Validaciones** HTML (`required`, `type`, `minlength`, `pattern`) y **JavaScript** (reglas propias con mensajes por campo).
+- **Notificaciones** en la interfaz (avisos flotantes de éxito o error).
+- Código organizado en **módulos ES** (`import` / `export`).
 
----
+## Estructura
 
-###  Objetivos del Proyecto
-La plataforma busca fortalecer la presencia digital del negocio mediante una aplicación web híbrida (MPA/SPA) adaptable a dispositivos móviles y de escritorio que permita:
-* **Presentar la marca:** Difundir la identidad visual y la propuesta de valor de la cafetería.
-* **Catálogo interactivo (SPA):** Consultar, buscar y filtrar la oferta de cafés, bebidas, pastelería y combos de forma dinámica.
-* **Gestión de pedidos (SPA):** Añadir, quitar y modificar productos en un carrito de compras con cálculo del total en tiempo real.
-* **Contacto directo:** Formulario de consultas con validación de campos para la atención al cliente.
+```
+├── index.html, catalogo.html, carrito.html, pedido.html, confirmacion.html, contacto.html
+├── recursos/
+│   ├── datos/productos.json      Datos del catálogo (simula una API REST)
+│   ├── estilos/estilos.css
+│   ├── imagenes/
+│   └── js/
+│       ├── index.js              Punto de entrada: inicia la vista de cada página
+│       ├── config.js             Clave de Web3Forms
+│       ├── almacen.js            Carrito y último pedido (localStorage)
+│       ├── utilidades.js         Cálculos y funciones auxiliares
+│       ├── filtros.js            Filtrado y orden del catálogo
+│       ├── validacion.js         Reglas de validación de formularios
+│       ├── datos/api.js          fetch del JSON con try/catch
+│       ├── servicios/email.js    Envío de pedidos y consultas por email
+│       └── vistas/               catalogo, tarjeta, carrito, resumen, pedido, confirmacion, contacto, aviso
+├── tests/                        Tests con node:test
+└── .github/workflows/ci-cd.yml   Pipeline de CI/CD
+```
 
-###  Arquitectura y Estrategia Web
-* **Modelo de Negocio:** B2C (Business to Consumer), orientado directamente al consumidor final.
-* **Navegación:** Enfoque híbrido. Se emplean páginas tradicionales (MPA) para secciones estables (*Inicio*, *Nosotros*) y componentes dinámicos con JavaScript (SPA) para los módulos de alta interacción (*Catálogo*, *Carrito* y *Contacto*).
-* **Infraestructura:** Dominio planificado y verificado en NIC Argentina: `molidocafe.com.ar`.
+## Uso local
+
+Los módulos ES no funcionan abriendo los archivos con `file://`: hace falta un servidor local.
+
+```bash
+npm install
+npm run dev     # abre el sitio con Five Server
+npm test        # ejecuta los tests unitarios (node --test)
+```
+
+## CI/CD
+
+El workflow `.github/workflows/ci-cd.yml` de GitHub Actions:
+
+1. **CI:** en cada push y pull request instala Node 22 y ejecuta `npm test` (tests unitarios con `node:test` de 4 funciones).
+2. **CD:** si el push es a `main` **y los tests pasaron**, despliega a producción en Vercel con Vercel CLI.
+
+El despliegue automático propio de Vercel está desactivado (`vercel.json`), así **solo se publica código que pasó los tests**.
+El workflow necesita los secretos `VERCEL_TOKEN`, `VERCEL_ORG_ID` y `VERCEL_PROJECT_ID` en *Settings → Secrets and variables → Actions*.

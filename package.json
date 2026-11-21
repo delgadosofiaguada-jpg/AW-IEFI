@@ -1,0 +1,19 @@
+{
+  "name": "molido-cafe",
+  "version": "1.0.0",
+  "description": "Molido Café — sitio web de cafetería de especialidad (Aplicaciones Web 1, IEFI)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "five-server --port=5500",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Delgado, Sofía",
+  "license": "ISC",
+  "devDependencies": {
+    "five-server": "^0.5.0"
+  }
+}
