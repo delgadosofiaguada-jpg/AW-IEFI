@@ -3,7 +3,8 @@
 Sitio web front-end de **Molido Café**, cafetería de especialidad y pastelería artesanal (caso de negocio ficticio).
 Proyecto final (IEFI) de **Aplicaciones Web 1** — Colegio Universitario IES Siglo 21.
 
-- **Sitio publicado:** _(completar con la URL de Vercel)_
+- **Sitio publicado:**  https://awiefidelgado.vercel.app
+
 - **Alumna:** Delgado, Sofía — Analista de Sistemas y Desarrollo de Software
 - **TP grupales (SP1 a SP4):** Astudillo, Delgado, Roldán, Gaido. Cada etapa está en su propia rama.
 
